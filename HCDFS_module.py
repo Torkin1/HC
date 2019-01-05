@@ -22,7 +22,7 @@ def hasCycleDFS(G):
 	if(dfsCycleDetected(nodeList[0].id)):      #se la chiamata a dfsCycleDetected restituisce 1 allora è presente un ciclo, partiamo dal primo nodo nella lista dei nodi
         detected = True                        #presenza del ciclo
 
-	return detected                        
+    return detected                        
 
 
 def dfsCycleDetected(self, rootId):
