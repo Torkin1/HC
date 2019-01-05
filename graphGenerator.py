@@ -1,3 +1,11 @@
+"""
+File name: graphGenerator.py
+Author: Daniele La Prova, Lorenzo Mei, Mihai Jianu
+Python version: 3.x
+
+Generatore di Grafi con nodi randomici, di grandezza e range a scelta, ciclico e non.
+"""
+
 from Graph.graph.Graph_AdjacencyMatrix import *
 from random import randint
 
