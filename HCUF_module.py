@@ -49,10 +49,11 @@ def hasCycleUF(G):
     while not exit:
         try:
             currentEdge = next(edge)
-            if uf.find(currentEdge.tail) == uf.find(currentEdge.head):
+            tailSet, headSet = uf.makeSet(currentEdge.tail), uf.makeSet(currentEdge.head)
+            if uf.find(tailset) == uf.find(headSet):
                 return True
             else:
-                uf.union(currentEdge.tail, currentEdge.head)
+                uf.union(uf.findRoot(tailSet), uf.findRoot(headSet))
         except StopIteration:
                 exit = True
     return False
