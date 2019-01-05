@@ -1,6 +1,6 @@
 """
 File name: graphGenerator.py
-Author: Daniele La Prova, Lorenzo Mei, Mihai Jianu
+Author: Mihai Jianu, Daniele La Prova, Lorenzo Mei 
 Python version: 3.x
 
 Generatore di Grafi con nodi randomici, di grandezza e range a scelta, ciclico e non.
@@ -29,7 +29,7 @@ def gGenerator(n, rangeG, Ciclo = True):
             for k in range(0, n + 1):
                 g.insertEdge(j, k, 1)
         g.print()
-        return
+        return g
     else:
         g = GraphAdjacencyMatrix()
         for i in range(0, n):
@@ -39,4 +39,4 @@ def gGenerator(n, rangeG, Ciclo = True):
         for k in range(0, n):
             g.insertEdge(k + 1, k, 1)
         g.print()
-        return
+        return g
