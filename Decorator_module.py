@@ -5,15 +5,18 @@ Python version: 3.x
 Decorator
 """
 
-from cProfile import run
+#from HCUF_module import *
+from cProfile import runctx, run
 import pstats
 import functools
 from Graph.graph.Graph_AdjacencyMatrix import *
 
+globalParam = None # necessaria per il profiler, altrimenti è impossibile passare il grafo come argomento del decorator.
+
 def include_stripped(decorator):
     def wrapping_decorator(func):
         wrapped = decorator(func)
-        wrapped.stripped = func
+        wrapped_stripped = func
         return wrapped
     return wrapping_decorator
 
@@ -23,8 +26,10 @@ def profiler(func):
     @functools.wraps(func)
     def wrapping_function(args):
         name = func.__name__
-        #param = args.adj
-        run(f'{name}.stripped({args})', 'stats.txt')
+        global globalParam
+        globalParam = args
+        runctx(f'{name}.stripped(args)', globals(), locals(), 'stats.txt')
+        #run(wrapped_stripped(globalParam), 'stats.txt')
         with open(f'{name}.txt', 'w') as outPutPath:
             stats = pstats.Stats('stats.txt', stream = outPutPath).strip_dirs().sort_stats("time")
             stats.print_stats()
