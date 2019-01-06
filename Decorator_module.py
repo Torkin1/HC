@@ -5,47 +5,33 @@ Python version: 3.x
 Decorator
 """
 
-from HCUF_module import *
 from cProfile import run
 import pstats
 import functools
 
-def include_original(dec):
-    def meta_decorator(f):
-        decorated = dec(f)
-        decorated._original = f
-        return decorated
-    return meta_decorator
+def include_stripped(decorator):
+    def wrapping_decorator(func):
+        wrappeed = decorator(func)
+        wrappeed._stripped = func
+        return wrappeed
+    return wrapping_decorator
 
-@include_original
-def time(func):
+
+@include_stripped
+def profiler(func):
     @functools.wraps(func)
-    def wrapping_function():
-        run('waste_some_time._original()', 'stats.txt')
-        pstats.Stats('stats.txt').strip_dirs().sort_stats("time").print_stats()
-        #value = pstats.Stats('stats.txt').strip_dirs().sort_stats("time").print_stats()
-        #elapsed = 500
-        #print(f'Function {func.__name__} with args {args} took {elapsed} seconds')
-        #return value
-        #filename = 'test.txt'
-        #run('waste_some_time()', "stats.txt")
-        #stats = pstats.Stats("stats.txt")
-        #stats.strip_dirs().sort_stats('time').print_stats()
-        #pr.dump_stats(filename)
-
-        #return value
-
-    wrapping_function._original = func
+    def wrapping_function(*args, **kwargs):
+        name = func.__name__
+        run(f'{name}._stripped(*args, **kwargs)', 'stats.txt')
+        with open(f'{name}.txt', 'w') as outPutPath:
+            stats = pstats.Stats('stats.txt', stream = outPutPath)
+            stats.print_stats()
     return wrapping_function
 
 
-
-@time
-def waste_some_time():
-    print("waste_some_time called")
-    for i in range(5000):
+@profiler
+def waste_some_time(num_times):
+    for _ in range(num_times):
         sum([i ** 2 for i in range(10000)])
-
 if __name__ == "__main__":
-    waste_some_time()
-
+    waste_some_time(100)
