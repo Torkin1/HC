@@ -115,3 +115,26 @@ def hasCycleUF(G, debug=False):
             exit = True
                     
     return False
+
+def include_stripped(decorator):
+    def wrapping_decorator(func):
+        wrapped = decorator(func)
+        wrapped_stripped = func
+        return wrapped
+    return wrapping_decorator
+
+
+@include_stripped
+def profiler(func):
+    @functools.wraps(func)
+    def wrapping_function(args):
+        name = func.__name__
+        global globalParam
+        globalParam = args
+        runctx(f'{name}.stripped(args)', globals(), locals(), 'stats.txt')
+        #run(wrapped_stripped(globalParam), 'stats.txt')
+        with open(f'{name}.txt', 'w') as outPutPath:
+            stats = pstats.Stats('stats.txt', stream = outPutPath).strip_dirs().sort_stats("time")
+            stats.print_stats()
+    return wrapping_function
+

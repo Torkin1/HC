@@ -6,6 +6,7 @@ Python version: 3.x
 Modulo contenente la definizione di hasCycleDFS e delle sue funzioni ausiliarie. Tale modulo è progettato per lavorare su grafi rappresentati come matrici di adiacienza.
 """
 
+from Decorator_module import *
 from Graph.graph.Graph_AdjacencyMatrix import *
 from Graph.graph.Graph import *
 
@@ -61,7 +62,7 @@ class subGraphBase(GraphAdjacencyMatrix):
 
         return False
 
-
+@profiler
 def hasCycleDFS(G):
     """
     @param G: Graph
