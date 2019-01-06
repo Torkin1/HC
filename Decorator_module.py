@@ -11,9 +11,9 @@ import functools
 
 def include_stripped(decorator):
     def wrapping_decorator(func):
-        wrappeed = decorator(func)
-        wrappeed._stripped = func
-        return wrappeed
+        wrapped = decorator(func)
+        wrapped.stripped = func
+        return wrapped
     return wrapping_decorator
 
 
@@ -22,9 +22,10 @@ def profiler(func):
     @functools.wraps(func)
     def wrapping_function(*args, **kwargs):
         name = func.__name__
-        run(f'{name}._stripped(*args, **kwargs)', 'stats.txt')
+        param = int(args[0])
+        run(f'{name}.stripped({param})', 'stats.txt')
         with open(f'{name}.txt', 'w') as outPutPath:
-            stats = pstats.Stats('stats.txt', stream = outPutPath)
+            stats = pstats.Stats('stats.txt', stream = outPutPath).strip_dirs().sort_stats("time")
             stats.print_stats()
     return wrapping_function
 
