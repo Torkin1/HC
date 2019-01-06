@@ -27,7 +27,8 @@ def gGenerator(n, rangeG, Ciclo = True):
             g.addNode(randint(0, rangeG))
         for j in range(0, n + 1):
             for k in range(0, n + 1):
-                g.insertEdge(j, k, 1)
+                if j != k:  # Altrimenti, inserisce archi con tail == head  -Daniele    
+                    g.insertEdge(j, k, 1)
         #g.print()
         return g
     else:
