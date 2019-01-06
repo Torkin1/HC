@@ -28,7 +28,7 @@ def gGenerator(n, rangeG, Ciclo = True):
         for j in range(0, n + 1):
             for k in range(0, n + 1):
                 g.insertEdge(j, k, 1)
-        g.print()
+        #g.print()
         return g
     else:
         g = GraphAdjacencyMatrix()
@@ -38,5 +38,5 @@ def gGenerator(n, rangeG, Ciclo = True):
             g.insertEdge(j, j + 1, 1)
         for k in range(0, n):
             g.insertEdge(k + 1, k, 1)
-        g.print()
+        #g.print()
         return g
