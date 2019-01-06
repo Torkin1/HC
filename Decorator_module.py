@@ -20,10 +20,9 @@ def include_stripped(decorator):
 @include_stripped
 def profiler(func):
     @functools.wraps(func)
-    def wrapping_function(*args, **kwargs):
+    def wrapping_function(args):
         name = func.__name__
-        param = int(args[0])
-        run(f'{name}.stripped({param})', 'stats.txt')
+        run(f'{name}.stripped({args})', 'stats.txt')
         with open(f'{name}.txt', 'w') as outPutPath:
             stats = pstats.Stats('stats.txt', stream = outPutPath).strip_dirs().sort_stats("time")
             stats.print_stats()
@@ -34,5 +33,6 @@ def profiler(func):
 def waste_some_time(num_times):
     for _ in range(num_times):
         sum([i ** 2 for i in range(10000)])
+
 if __name__ == "__main__":
-    waste_some_time(100)
+    waste_some_time(1000)
