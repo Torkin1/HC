@@ -21,7 +21,7 @@ def include_original(dec):
 def time(func):
     @functools.wraps(func)
     def wrapping_function():
-        run('waste_some_time._original', 'stats.txt')
+        run('waste_some_time._original()', 'stats.txt')
         pstats.Stats('stats.txt').strip_dirs().sort_stats("time").print_stats()
         #value = pstats.Stats('stats.txt').strip_dirs().sort_stats("time").print_stats()
         #elapsed = 500
@@ -42,6 +42,7 @@ def time(func):
 
 @time
 def waste_some_time():
+    print("waste_some_time called")
     for i in range(5000):
         sum([i ** 2 for i in range(10000)])
 
