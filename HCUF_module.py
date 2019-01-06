@@ -53,48 +53,6 @@ def edgeGenerator(G, maxTail, maxHead):
                 if G.adj[src][dst] is not None and G.adj[src][dst] != GraphAdjacencyMatrix.EMPTY and src != dst:
                     yield Edge(src, dst, G.adj[src][dst])
 
-
-def isAlreadyTouched(G, tail, head, debug=False):
-    """
-    @param G: graph
-    @param tail: int
-    @param head: int
-    @return bool
-
-    Controlla se l'arco e = (tail, head) corrisponde all'arco utilizzato al passo
-    precedente di hasCycleUF per approdare al nodo tail.
-    Di fatto, invoca edgeGenerator per generare tutti gli archi finora esplorati,
-    e controlla se tra essi sia presente l'arco e' = (head, tail).
-    In questo modo, si evita che lo stesso arco sia percorso in entrambi i sensi e
-    sia considerato ciclo (si assume che un ciclo, per essere tale, debba
-    comprendere almeno tre nodi).
-    """
-    
-    if debug == True:
-        print(f"isAlreadyTouched called with tail, head = ({tail},{head})")
-
-    touchedEdges = edgeGenerator(G, tail, head) # genera tutti gli archi finora esplorati
-    exit = False
-    
-    while not exit:
-        try:
-            currentEdge = next(touchedEdges)
-            
-            if debug == True:
-                print(f"current edge is {currentEdge}")
-
-            if tail == currentEdge.head and head == currentEdge.tail:   # controlla se in touchedEdges sia presente l'arco e'
-                if debug == True:
-                    print("isAreadyTouched returns True")
-                return True
-
-        except StopIteration:
-            exit = True
-
-    if debug == True:
-        print("isAlreadyTouched returns False")
-    return False
-
 def hasCycleUF(G, debug=False):
     """
     @param G: Graph (as adjacency matrix)
