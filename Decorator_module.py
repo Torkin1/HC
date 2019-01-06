@@ -8,6 +8,7 @@ Decorator
 from cProfile import run
 import pstats
 import functools
+from Graph.graph.Graph_AdjacencyMatrix import *
 
 def include_stripped(decorator):
     def wrapping_decorator(func):
@@ -22,6 +23,7 @@ def profiler(func):
     @functools.wraps(func)
     def wrapping_function(args):
         name = func.__name__
+        #param = args.adj
         run(f'{name}.stripped({args})', 'stats.txt')
         with open(f'{name}.txt', 'w') as outPutPath:
             stats = pstats.Stats('stats.txt', stream = outPutPath).strip_dirs().sort_stats("time")

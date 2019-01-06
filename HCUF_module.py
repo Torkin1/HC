@@ -12,6 +12,7 @@ adiacienza.
 from unionFind.quickFind import *
 #from unionFind.quickUnion import *
 from Graph.graph.Graph_AdjacencyMatrix import *
+from Decorator_module import *
 
 class CustomQFB(QuickFindBalanced):
     """
@@ -53,6 +54,7 @@ def edgeGenerator(G, maxTail, maxHead):
                 if G.adj[src][dst] is not None and G.adj[src][dst] != GraphAdjacencyMatrix.EMPTY and src != dst:
                     yield Edge(src, dst, G.adj[src][dst])
 
+@profiler
 def hasCycleUF(G, debug=False):
     """
     @param G: Graph (as adjacency matrix)
