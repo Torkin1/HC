@@ -1,0 +1,1 @@
+[Mon Jan  7 20:03:09 2019] name: hasCycleUF ; nodes: 3 ; edges: 6 ; elapsed: 0.00024s ; return: True
