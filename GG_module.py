@@ -43,10 +43,11 @@ def gGenerator(n, rangeG, Ciclo = False):
         return g
 
 
-def createGenericGraph(n, rangeG, Cycle = False):
+def createGenericGraph(n, rangeG, Cycle = True):
 
         graph = GraphAdjacencyMatrix()
         idList = []
+        edgesList = []
         nodeCount = 0
         serviceNodes = 2*(n - 1)
         #count = 1
@@ -61,12 +62,19 @@ def createGenericGraph(n, rangeG, Cycle = False):
             while(nodeCount < n):
                 nodeDst = idList[randint(0, len(idList) - 1)]
 
+                edge = (nodeCount, nodeDst)
+
                 print(nodeCount)
                 
-                if nodeCount != nodeDst :
+                if nodeCount != nodeDst and edge not in edgesList:
                     print(nodeDst)
                     print(idList)
 
+                    ### AGGIUNTA DELL'ARCO ALLA LISTA
+                    edgesList.append((nodeCount, nodeDst))
+                    edgesList.append((nodeDst, nodeCount))
+                    
+                    ### CREAZIONE DELL'ARCO
                     graph.insertEdge(nodeCount, nodeDst, 1)
                     graph.insertEdge(nodeDst, nodeCount, 1)
                     nodeCount += 1
