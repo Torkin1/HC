@@ -2,121 +2,82 @@
 File name: graphGenerator.py
 Author: Mihai Jianu, Daniele La Prova, Lorenzo Mei 
 Python version: 3.x
-
 Generatore di Grafi con nodi randomici, di grandezza e range a scelta, ciclico e non.
 """
 
 from Graph.graph.Graph_AdjacencyMatrix import *
 from random import randint
 
-def gGenerator(n, rangeG, Ciclo = False):
+def gGenerator(n, rangeG, cycle = 0, debug = False):
     """
     @param n: int
     @param range: int
     @param Ciclo: Bool
     @return Graph
-
     n = numero di nodi
     rangeG = range di numeri casuali, per creare i nodi
     Ciclo = Se si desidera o meno un grafo con il ciclo
     """
+    graph = GraphAdjacencyMatrix()
+    
+    for i in range(0, n ):
+        graph.addNode(randint(0, rangeG))
+    nodeList = graph.getNodes()
+    tailList = nodeList.copy()
+    headList = tailList.copy()
+    
 
-    if  Ciclo:
-        g = GraphAdjacencyMatrix()
-        for i in range(0, n):
-            g.addNode(randint(0, rangeG))
-        for j in range(0, n + 1):
-            for k in range(0, n + 1):
-                if j != k:  # Altrimenti, inserisce archi con tail == head  -Daniele    
-                    g.insertEdge(j, k, 1)
-        g.print()
-        return g
-    else:
-        g = GraphAdjacencyMatrix()
-        for i in range(0, n):
-            g.addNode(randint(0, rangeG))
-        for j in range(0, n):
-            g.insertEdge(j, j + 1, 1)
-        for k in range(0, n):
-            g.insertEdge(k + 1, k, 1)
-        g.print()
-        return g
-
-
-def createGenericGraph(n, rangeG, Cycle = True):
-
-        graph = GraphAdjacencyMatrix()
-        idList = []
-        edgesList = []
-        nodeCount = 0
-        serviceNodes = 2*(n - 1)
-        #count = 1
-
-        #create all nodes
-        for i in range(0, n):
-            graph.addNode(randint(0, rangeG))
-            idList.append(i)
+    nIterations = n - 1
+    
+    for j in range(0, nIterations):
         
-        if Cycle:
+        if debug:
+            print("Start")
+            for i in range(0, len(tailList)):
+                print(tailList[i].id)
+            print ("end")
+        
+        tailIndex = randint(0, len(tailList) - 1)
+        tailNode = tailList.pop(tailIndex)
+        
+        if debug:
+            print("Start dopo Pop")
+            for i in range(0, len(tailList)):
+                print(tailList[i].id)
+            print("end dopo pop")
+                #print(tailNode.id)
             
-            while(nodeCount < n):
-                nodeDst = idList[randint(0, len(idList) - 1)]
-
-                edge = (nodeCount, nodeDst)
-
-                print(nodeCount)
-                
-                if nodeCount != nodeDst and edge not in edgesList:
-                    print(nodeDst)
-                    print(idList)
-
-                    ### AGGIUNTA DELL'ARCO ALLA LISTA
-                    edgesList.append((nodeCount, nodeDst))
-                    edgesList.append((nodeDst, nodeCount))
-                    
-                    ### CREAZIONE DELL'ARCO
-                    graph.insertEdge(nodeCount, nodeDst, 1)
-                    graph.insertEdge(nodeDst, nodeCount, 1)
-                    nodeCount += 1
-
-        ####    IN COSTRUZIONE  ####
-
-        else:
-            while(nodeCount < n - 1 or graph.numEdges() < 2*(n - 1)):
-                nodeDst = idList[randint(0, len(idList) - 1)]
-
-                print(nodeCount)
-                
-                if nodeCount != nodeDst:
-                    print(nodeDst)
-                    print(idList)
-
-                    graph.insertEdge(nodeCount, nodeDst, 1)
-                    graph.insertEdge(nodeDst, nodeCount, 1)
-                    nodeCount += 1
-
-                
-
-        #graph.print()
-
-        #check if the graph is connected
-        #i = 0
-
-        #while(i < n and count != 0):
+        headIndex = randint(0, len(tailList) - 1)
+        headNode = tailList[headIndex]
+        
+        graph.insertEdge(tailNode.id, headNode.id, 1)
+        graph.insertEdge(headNode.id, tailNode.id, 1)
+        
+        if debug:
+            edge = graph.getEdge(tailNode.id,headNode.id)
+            print(f"edge is {edge.tail}, {edge.head}")
+    
+    if cycle > 0:
+        
+        if debug:
+            print(f"tentativo di inserimento di un ciclo ...")
+        
+        for times in range(0, cycle):
+            randNode = nodeList[randint(0, n - 1)]
+            adjList = graph.getAdj(randNode.id)
+            done = False
             
-            #if len(graph.getAdj(i)) < 2:
-                #print("not connected")
-                #nodeDest = randint(0, n - 1)
+            x = 0
+            while x < len(nodeList) and not done:
+                if not graph.isAdj(randNode.id, nodeList[x].id) and randNode.id != nodeList[x].id:
+                    graph.insertEdge(randNode.id, nodeList[x].id, 1)
+                    graph.insertEdge(nodeList[x].id, randNode.id, 1)
+                    if debug:
+                        print(f"edge added is ({randNode.id}, {nodeList[x].id})")
+                    done = True
+                x += 1
 
-                #if nodeDest != i:
-                    #print("Insert edge {}, {}".format(i, nodeDest))
-                    #graph.insertEdge(i, nodeDest, 1)
-                    #graph.insertEdge(nodeDest, i, 1)
-                    #i += 1
-                    #count -= 1
-
-            #else:
-                #i += 1
-
+    if debug:
         graph.print()
-        return graph
+    
+    return graph

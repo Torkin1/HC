@@ -1,1 +1,7 @@
-[Mon Jan  7 20:03:09 2019] name: hasCycleUF ; nodes: 3 ; edges: 6 ; elapsed: 0.00024s ; return: True
+[Wed Jan  9 18:12:45 2019] name: hasCycleUF ; nodes: 5 ; edges: 8 ; elapsed: 0.00112s ; return: True
+[Wed Jan  9 18:46:26 2019] name: hasCycleUF ; nodes: 5 ; edges: 8 ; elapsed: 0.00135s ; return: True
+[Wed Jan  9 18:50:55 2019] name: hasCycleUF ; nodes: 5 ; edges: 8 ; elapsed: 0.00142s ; return: True
+[Wed Jan  9 18:56:07 2019] name: hasCycleUF ; nodes: 5 ; edges: 8 ; elapsed: 0.00093s ; return: True
+[Wed Jan  9 18:57:36 2019] name: hasCycleUF ; nodes: 5 ; edges: 8 ; elapsed: 0.00251s ; return: True
+[Wed Jan  9 19:02:07 2019] name: hasCycleUF ; nodes: 5 ; edges: 8 ; elapsed: 0.00117s ; return: False
+[Wed Jan  9 19:16:02 2019] name: hasCycleUF ; nodes: 5 ; edges: 8 ; elapsed: 0.00268s ; return: True

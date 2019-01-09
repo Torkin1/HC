@@ -76,13 +76,15 @@ def hasCycleUF(G, debug=False):
     uf = CustomQFB()
     exit = False
     previousTail = 0
+    previousHead = 0
     edges = edgeGenerator(G, len(G.adj) - 1, len(G.adj) - 1)
 
     while not exit:
         try:
-            if debug == True:
-                print(f"previous tail was {previousTail}")
+#            if debug == True:
+#                print(f"previous tail was {previousTail}")
             
+            edgeSeen = edgeGenerator(G, previousTail, previousHead)
             currentEdge = next(edges)
             if debug == True:
                 print(f"current edge is {currentEdge}")
@@ -100,14 +102,35 @@ def hasCycleUF(G, debug=False):
             if debug == True:
                 print(f"tailNode is {tailNode}, headNode is {headNode}")
             
-            if not currentEdge.tail > previousTail and uf.find(tailNode) == uf.find(headNode):
+            currentSeen = Edge(0, 0, 1)
+            if debug:
+                print(f"initial currentSeen is ({currentSeen})")
+            
+            innerExit = False
+            while not innerExit:
+                if debug:
+                    print("controllo se ho già percorso l'arco ...")
+                try:
+                    currentSeen = next(edgeSeen)
+                except StopIteration:
+                    if debug:
+                        print(f"seen edges terminated ...")
+                        innerExit = True
+                if debug:
+                    print(f"currentSeen is ({currentSeen.tail}{currentSeen.head})")
+                if currentEdge.tail == currentSeen.head and  currentEdge.head == currentSeen.tail:
+                    if debug:
+                        print("già percorso")
+                    continue
+            
+            if uf.find(tailNode) == uf.find(headNode):
                 return True
             else:
                 uf.union(uf.findRoot(tailNode), uf.findRoot(headNode))
                 if debug == True:
                     print(f"made an Union!")
                     uf.print()
-                previousTail = currentEdge.tail # necessario per evitare di esplorare lo stesso arco in entrambi i sensi
+#                previousTail = currentEdge.tail # necessario per evitare di esplorare lo stesso arco in entrambi i sensi
 
         except StopIteration:
             if debug == True:
@@ -116,25 +139,25 @@ def hasCycleUF(G, debug=False):
                     
     return False
 
-def include_stripped(decorator):
-    def wrapping_decorator(func):
-        wrapped = decorator(func)
-        wrapped_stripped = func
-        return wrapped
-    return wrapping_decorator
+#def include_stripped(decorator):
+#    def wrapping_decorator(func):
+#        wrapped = decorator(func)
+#        wrapped_stripped = func
+#        return wrapped
+#    return wrapping_decorator
 
 
-@include_stripped
-def profiler(func):
-    @functools.wraps(func)
-    def wrapping_function(args):
-        name = func.__name__
-        global globalParam
-        globalParam = args
-        runctx(f'{name}.stripped(args)', globals(), locals(), 'stats.txt')
-        #run(wrapped_stripped(globalParam), 'stats.txt')
-        with open(f'{name}.txt', 'w') as outPutPath:
-            stats = pstats.Stats('stats.txt', stream = outPutPath).strip_dirs().sort_stats("time")
-            stats.print_stats()
-    return wrapping_function
+#@include_stripped
+#def profiler(func):
+#    @functools.wraps(func)
+#    def wrapping_function(args):
+#        name = func.__name__
+#        global globalParam
+#        globalParam = args
+#        runctx(f'{name}.stripped(args)', globals(), locals(), 'stats.txt')
+#        #run(wrapped_stripped(globalParam), 'stats.txt')
+#        with open(f'{name}.txt', 'w') as outPutPath:
+#            stats = pstats.Stats('stats.txt', stream = outPutPath).strip_dirs().sort_stats("time")
+#            stats.print_stats()
+#    return wrapping_function
 

@@ -26,7 +26,7 @@ def profiler(func):
         pathToOutput = "log.txt"
         
         startTime = time()
-        rValue = func(args[0])
+        rValue = func(args[0], kwargs["debug"])
         elapsedTime = time() - startTime
         
         with open(pathToOutput, "a") as fOutput:
