@@ -24,14 +24,31 @@ def profiler(func):
     def wrapFunction(*args, **kwargs):
 
         pathToOutput = "log.txt"
-        
         startTime = time()
-        rValue = func(args[0], kwargs["debug"])
-        elapsedTime = time() - startTime
         
+        try:
+            rValue = func(args[0], kwargs["debug"])
+        except KeyError:
+            rValue = func(args[0])
+
+        try:
+            if kwargs["timeAccuracy"] > 0:
+                timeAccuracy = 3 + kwargs["timeAccuracy"]
+        except KeyError:
+                timeAccuracy = 3
+        
+        elapsedTime = time() - startTime
+        appendedLine = f"[{ctime(time())}] name: {func.__name__} ; nodes: {len(args[0].adj)} ; edges: {args[0].numEdges()} ; elapsed: {str(elapsedTime)[:timeAccuracy]}s ; return: {rValue}\n"
         with open(pathToOutput, "a") as fOutput:
             
-            fOutput.write(f"[{ctime(time())}] name: {func.__name__} ; nodes: {len(args[0].adj)} ; edges: {args[0].numEdges()} ; elapsed: {str(elapsedTime)[:7]}s ; return: {rValue}\n")
+            fOutput.write(appendedLine)
+        
+        try:
+            if kwargs["showProfile"]:
+                print(appendedLine)
+        except KeyError:
+            pass
+        
         return rValue
     
     return wrapFunction
@@ -46,7 +63,6 @@ def profiler(func):
 #        
 #        valueReturned = funcProfile.runcall(func, *args, **kwargs)
 #        funcProfile.dump_stats("tempStats.txt")
-#        #run(f"{func.__name__}(*args, **kwargs)", "tempStats.txt")
 #        
 #        with open(pathToOutput, 'w') as fOutput: 
 #            fOutput.write(f"Function called: {func.__name__}\n")

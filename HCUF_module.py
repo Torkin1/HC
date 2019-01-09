@@ -49,13 +49,13 @@ def edgeGenerator(G, maxTail, maxHead):
     Genera un iterabile che scorre gli archi di G t.c. tail, head <= maxTail, maxHead
     """
     
-    for src in range(maxTail + 1):
-            for dst in range(maxHead + 1):
+    for src in range(maxTail):
+            for dst in range(maxHead):
                 if G.adj[src][dst] is not None and G.adj[src][dst] != GraphAdjacencyMatrix.EMPTY and src != dst:
                     yield Edge(src, dst, G.adj[src][dst])
 
 @profiler
-def hasCycleUF(G, debug=False):
+def hasCycleUF(G, debug=False, showProfile = False, timeAccuracy = False):
     """
     @param G: Graph (as adjacency matrix)
     @return bool
@@ -74,22 +74,22 @@ def hasCycleUF(G, debug=False):
     
     #uf = QuickUnionBalanced
     uf = CustomQFB()
-    exit = False
-    previousTail = 0
-    previousHead = 0
-    edges = edgeGenerator(G, len(G.adj) - 1, len(G.adj) - 1)
+    edges = edgeGenerator(G, len(G.adj), len(G.adj))
+    countEdge = 0
 
-    while not exit:
+    while True:
         try:
 #            if debug == True:
 #                print(f"previous tail was {previousTail}")
             
-            edgeSeen = edgeGenerator(G, previousTail, previousHead)
             currentEdge = next(edges)
+            countEdge += 1
             if debug == True:
                 print(f"current edge is {currentEdge}")
 
-            if uf.findNode(currentEdge.tail) == None:   # se gli elementi non appartengono a nessun nodo, vengono creati nuovi set con tali elementi all'interno (uno per elemento)
+            # se gli elementi non appartengono a nessun nodo, vengono creati nuovi set con tali elementi all'interno (uno per elemento)
+
+            if uf.findNode(currentEdge.tail) == None:
                 uf.makeSet(currentEdge.tail)
 
             if uf.findNode(currentEdge.head) == None:    
@@ -98,46 +98,52 @@ def hasCycleUF(G, debug=False):
             if debug == True:
                 uf.print()
 
-            tailNode, headNode = uf.findNode(currentEdge.tail), uf.findNode(currentEdge.head)   # trova il nodo nella uf contenente tali elementi
+            # trova il nodo nella uf contenente tali elementi
+            
+            tailNode, headNode = uf.findNode(currentEdge.tail), uf.findNode(currentEdge.head)   
             if debug == True:
                 print(f"tailNode is {tailNode}, headNode is {headNode}")
+                        
+            # genera gli archi finora esplorati e controlla se currentEdge sia già presente o meno tra di essi, per evitare che venga esplorato nell'altro senso (e dunque avere l'illusione di un ciclo)
             
+            edgeSeen = edgeGenerator(G, len(G.adj), len(G.adj))
             currentSeen = Edge(0, 0, 1)
+
             if debug:
-                print(f"initial currentSeen is ({currentSeen})")
-            
-            innerExit = False
-            while not innerExit:
-                if debug:
-                    print("controllo se ho già percorso l'arco ...")
+                print("controllo se ho già percorso l'arco ...")
+
+            exit, seen = False, False
+            countSeen = 0
+            while not exit :
                 try:
                     currentSeen = next(edgeSeen)
+                    countSeen += 1
+                    if debug:
+                        print(f"currentSeen is {currentSeen}")
+                    if currentEdge.tail == currentSeen.head and currentEdge.head == currentSeen.tail and countSeen < countEdge:
+                        if debug:
+                            print("già percorso")
+                        seen = True
                 except StopIteration:
-                    if debug:
-                        print(f"seen edges terminated ...")
-                        innerExit = True
-                if debug:
-                    print(f"currentSeen is ({currentSeen.tail}{currentSeen.head})")
-                if currentEdge.tail == currentSeen.head and  currentEdge.head == currentSeen.tail:
-                    if debug:
-                        print("già percorso")
-                    continue
+                        if debug:
+                            print(f"seen edges terminated ...")
+                        exit = True
+
+            # controlla se c'è un ciclo, altrimenti continua
             
-            if uf.find(tailNode) == uf.find(headNode):
+            if uf.find(tailNode) == uf.find(headNode) and not seen:
                 return True
             else:
                 uf.union(uf.findRoot(tailNode), uf.findRoot(headNode))
                 if debug == True:
-                    print(f"made an Union!")
+                   #print(f"made an Union!")
                     uf.print()
-#                previousTail = currentEdge.tail # necessario per evitare di esplorare lo stesso arco in entrambi i sensi
-
+                
         except StopIteration:
             if debug == True:
                 print("iteration terminated, exiting ...")
-            exit = True
+            return False
                     
-    return False
 
 #def include_stripped(decorator):
 #    def wrapping_decorator(func):
