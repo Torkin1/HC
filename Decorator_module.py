@@ -32,10 +32,10 @@ def profiler(func):
             rValue = func(args[0])
 
         try:
-            if kwargs["timeAccuracy"] > 0:
-                timeAccuracy = 3 + kwargs["timeAccuracy"]
+            if kwargs["timeAccuracy"] >= 0:
+                timeAccuracy = 5 + kwargs["timeAccuracy"]
         except KeyError:
-                timeAccuracy = 3
+                timeAccuracy = 5
         
         elapsedTime = time() - startTime
         appendedLine = f"[{ctime(time())}] name: {func.__name__} ; nodes: {len(args[0].adj)} ; edges: {args[0].numEdges()} ; elapsed: {str(elapsedTime)[:timeAccuracy]}s ; return: {rValue}\n"

@@ -24,7 +24,7 @@ class CustomGAM(GraphAdjacencyMatrix):
         self.nextId = G.nextId
         self.adj = G.adj
 
-
+    #@profiler
     def dfsDetectedCycle(self, rootId, debug):
         """
         Execute a Depth-First Search (DFS) in the graph starting from the
@@ -59,7 +59,7 @@ class CustomGAM(GraphAdjacencyMatrix):
 
                     for elem in s.s:    #conteggio della presenza del nodo nello stack
                         if adj_node == elem:
-                            count += 1
+                            countSeen += 1
 
                 if countSeen > 1:    #Se ho visto almeno 2 volte lo stesso nodo nello stack ho un ciclo 
                     return True
