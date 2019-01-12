@@ -68,7 +68,6 @@ class CustomGAM(GraphAdjacencyMatrix):
                     print("-------")
                     print(f"Current node: {node}")
                     print(f"Adjacent node: {adj_node}")
-                    print(f"Previous node: {prevNode}")
                     print(f"Explored nodes: {explored}")
                     print(f"DFS list: {dfs_nodes}")              
                     print("-------")
