@@ -30,7 +30,12 @@ class CustomGAM(GraphAdjacencyMatrix):
         """
         Execute a Depth-First Search (DFS) in the graph starting from the
         specified node and check if a cycle is detected.
+
+        Se, durante la visita DFS, un nodo viene inserito più di una volta nello stack,
+        allora indica la presenza di un ciclo
+        
         :param rootId: the root node ID (integer).
+        @param debug: bool, if True shows details of execution 
         :return: boolean
         """
         # if the root does not exists, return None

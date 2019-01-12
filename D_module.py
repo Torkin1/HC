@@ -2,27 +2,40 @@
 File name: Decorator_module.py
 Author: Mihai Jianu, Daniele La Prova, Lorenzo Mei
 Python version: 3.x
-Decorator
-"""
 
-#from cProfile import Profile, run
-#import pstats
+Tale modulo contiene le definizioni di profiler e include_stripped.
+"""
 from time import time, ctime
 
 def include_stripped(decorator):
-    
-    def wrapping_decorator(func):
-        
+   """
+   Decoratore di decoratori:
+
+   Mantiene il nome originale di func, così che non venga sostituito da quello della
+   funzione di wrap.
+   """
+   def wrapping_decorator(func):
+        """
+        Nucleo di include_stripped.
+        """
         wrapped = decorator(func)
         wrapped_stripped = func
         return wrapped
-    return wrapping_decorator
+   return wrapping_decorator
 
 @include_stripped
 def profiler(func):
+    """
+    Decoratore di funzioni.
 
+    Esegue un profiling di func e lo annota nel file log.txt, registrando la data,
+    il nome di func, il numero di vertici e archi del grafo di input, il tempo di 
+    esecuzione e il valore di ritorno.
+    """
     def wrapFunction(*args, **kwargs):
-
+        """
+        Nucleo di profiler.
+        """
         pathToOutput = "log.txt"
         startTime = time()
 #        print(f"startTime is {startTime}")
@@ -32,12 +45,6 @@ def profiler(func):
         except KeyError:
             rValue = func(args[0])
 
-#        try:
-#            if kwargs["timeAccuracy"] >= 0:
-#                timeAccuracy = 3 + kwargs["timeAccuracy"]
-#        except KeyError:
-#                timeAccuracy = 3
-        
         #endTime = time()
         #print(f"endTime is {endTime}")
         elapsedTime = time() - startTime
@@ -55,25 +62,3 @@ def profiler(func):
         return rValue
     
     return wrapFunction
-            
-#@include_stripped
-#def profiler(func):
-#    
-#    def wrapFunction(*args, **kwargs):
-#        
-#        funcProfile = Profile()
-#        pathToOutput = f"{func.__name__}" + f"{len(args[0].adj)}" + ".txt"
-#        
-#        valueReturned = funcProfile.runcall(func, *args, **kwargs)
-#        funcProfile.dump_stats("tempStats.txt")
-#        
-#        with open(pathToOutput, 'w') as fOutput: 
-#            fOutput.write(f"Function called: {func.__name__}\n")
-#            fOutput.write("\n")
-#            fOutput.write(f"Size of input: {len(args[0].adj)} nodes, {args[0].numEdges()} edges\n")
-#            fOutput.write("\n")
-#            pstats.Stats('tempStats.txt', stream = fOutput).strip_dirs().sort_stats("time").print_stats()
-#        
-#        return valueReturned
-#    return wrapFunction
-

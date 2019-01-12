@@ -2,7 +2,9 @@
 File name: graphGenerator.py
 Author: Mihai Jianu, Daniele La Prova, Lorenzo Mei 
 Python version: 3.x
-Generatore di Grafi con nodi randomici, di grandezza e range a scelta, ciclico e non.
+
+Modulo contenente la definizione del generatore di Grafi con nodi randomici, di grandezza
+e range a scelta, ciclici e non.
 """
 
 from time import time
@@ -12,14 +14,22 @@ from random import randint
 def gGenerator(n, rangeG, cycle = 0, debug = False):
     """
     @param n: int
-    @param range: int
-    @param Ciclo: Bool
+    @param rangeG: int
+    @param cycle: int, if >0 aggiunge cycle cicli
+    @param debug: bool, if True shows execution details
     @return Graph
-    n = numero di nodi
-    rangeG = range di numeri casuali, per creare i nodi
-    Ciclo = Se si desidera o meno un grafo con il ciclo
+    
+    Genera un grafo con n nodi e almeno n - 1 archi secondo il seguente algoritmo.
+
+    Per n - 1 volte, esegue un pop di un nodo tail casuale da una tailList composta
+    inizialmente da n nodi. Inoltre, sceglie un altro nodo head casuale dalla tailList
+    (senza eseguire il pop) e inserisce nel grafo gli archi (tail, head) e (head, tail).
+    In questo modo si ottiene un grafo non orientato connesso con n nodi e 2n - 2 archi.
+    Se cycle > 0, aggiunge cycle archi al grafo tra nodi non adiacienti tra loro, 
+    inserendo dunque cycle cicli. 
     """
-#    start = time()
+    if debug:
+        start = time()
 
     graph = GraphAdjacencyMatrix()
     
@@ -63,7 +73,7 @@ def gGenerator(n, rangeG, cycle = 0, debug = False):
     if cycle > 0:
         
         if debug:
-            print(f"tentativo di inserimento di un ciclo ...")
+            print(f"tentativo di inserimento di {cycle} cicli ...")
         
         for times in range(0, cycle):
             randNode = nodeList[randint(0, n - 1)]
@@ -82,6 +92,6 @@ def gGenerator(n, rangeG, cycle = 0, debug = False):
 
     if debug:
         graph.print()
+        print(f"elapsed time is {time() - start} ")
     
-#    print(f"elapsed time is {time() - start} ")
     return graph
