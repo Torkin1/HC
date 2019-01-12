@@ -38,15 +38,12 @@ def profiler(func):
         """
         pathToOutput = "log.txt"
         startTime = time()
-#        print(f"startTime is {startTime}")
         
         try:
             rValue = func(args[0], kwargs["debug"])
         except KeyError:
             rValue = func(args[0])
 
-        #endTime = time()
-        #print(f"endTime is {endTime}")
         elapsedTime = time() - startTime
         appendedLine = f"[{ctime(time())}] name: {func.__name__} ; nodes: {len(args[0].adj)} ; edges: {args[0].numEdges()} ; elapsed: {'%.3f' % elapsedTime}s ; return: {rValue}\n"
         with open(pathToOutput, "a") as fOutput:

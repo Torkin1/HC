@@ -11,6 +11,8 @@ from time import time
 from Graph.graph.Graph_AdjacencyMatrix import *
 from random import randint
 
+MAXNODES = 10000
+
 def gGenerator(n, rangeG, cycle = 0, debug = False):
     """
     @param n: int
@@ -28,37 +30,48 @@ def gGenerator(n, rangeG, cycle = 0, debug = False):
     Se cycle > 0, aggiunge cycle archi al grafo tra nodi non adiacienti tra loro, 
     inserendo dunque cycle cicli. 
     """
+    # si assicura che n < MAXNODES per impedire di generare grafi troppo grandi (e dunque ingestibili dal punto di vista dell'occupazione della memoria)
+    
+    try:
+        assert n < MAXNODES 
+    
+    except AssertionError:    
+        print(f"n = {n} is too big, executing with n = {MAXNODES} instead (see documentation for details) ...)")
+        n = MAXNODES
+
     if debug:
         start = time()
 
-    graph = GraphAdjacencyMatrix()
+    # inizializza il grafo, aggiungendo n nodi di valore numerico intero casuale.
     
+    graph = GraphAdjacencyMatrix()
     for i in range(0, n ):
         graph.addNode(randint(0, rangeG))
+
+    # rende il grafo connesso, senza creare cicli.
+    
     nodeList = graph.getNodes()
     tailList = nodeList.copy()
     headList = tailList.copy()
-    
 
     nIterations = n - 1
     
     for j in range(0, nIterations):
         
         if debug:
-            print("Start")
+            print("start tailList")
             for i in range(0, len(tailList)):
                 print(tailList[i].id)
-            print ("end")
+            print ("end tailList")
         
         tailIndex = randint(0, len(tailList) - 1)
         tailNode = tailList.pop(tailIndex)
         
         if debug:
-            print("Start dopo Pop")
+            print("start tailList (after pop)")
             for i in range(0, len(tailList)):
                 print(tailList[i].id)
-            print("end dopo pop")
-                #print(tailNode.id)
+            print("end taiList (after pop)")
             
         headIndex = randint(0, len(tailList) - 1)
         headNode = tailList[headIndex]
@@ -68,12 +81,14 @@ def gGenerator(n, rangeG, cycle = 0, debug = False):
         
         if debug:
             edge = graph.getEdge(tailNode.id,headNode.id)
-            print(f"edge is {edge.tail}, {edge.head}")
+            print(f"added edge ({edge.tail}, {edge.head})")
     
+    # infine, aggiunge eventualmente il numero di cicli richiesti.
+
     if cycle > 0:
         
         if debug:
-            print(f"tentativo di inserimento di {cycle} cicli ...")
+            print(f"attempting to insert {cycle} cycles ...")
         
         for times in range(0, cycle):
             randNode = nodeList[randint(0, n - 1)]
@@ -86,7 +101,7 @@ def gGenerator(n, rangeG, cycle = 0, debug = False):
                     graph.insertEdge(randNode.id, nodeList[x].id, 1)
                     graph.insertEdge(nodeList[x].id, randNode.id, 1)
                     if debug:
-                        print(f"edge added is ({randNode.id}, {nodeList[x].id})")
+                        print(f"added edge ({randNode.id}, {nodeList[x].id})")
                     done = True
                 x += 1
 
