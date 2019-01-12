@@ -12,7 +12,7 @@ adiacienza.
 from unionFind.quickFind import *
 #from unionFind.quickUnion import *
 from Graph.graph.Graph_AdjacencyMatrix import *
-from Decorator_module import *
+from D_module import *
 
 class CustomQFB(QuickFindBalanced):
     """
@@ -41,7 +41,7 @@ class CustomQFB(QuickFindBalanced):
 
 def edgeGenerator(G, maxTail, maxHead):
     """
-    @param G: Graph
+    @param G: Graph (as adjacency matrix)
     @param maxTail: int, maximum range of sources
     @param maxHead: int, maximum range of destinations
     @return iterable
@@ -55,7 +55,7 @@ def edgeGenerator(G, maxTail, maxHead):
                     yield Edge(src, dst, G.adj[src][dst])
 
 @profiler
-def hasCycleUF(G, debug=False, showProfile = False, timeAccuracy = False):
+def hasCycleUF(G, debug=False, showProfile = False):
     """
     @param G: Graph (as adjacency matrix)
     @return bool
@@ -72,16 +72,12 @@ def hasCycleUF(G, debug=False, showProfile = False, timeAccuracy = False):
 
     """ 
     
-    #uf = QuickUnionBalanced
     uf = CustomQFB()
     edges = edgeGenerator(G, len(G.adj), len(G.adj))
     countEdge = 0
 
     while True:
         try:
-#            if debug == True:
-#                print(f"previous tail was {previousTail}")
-            
             currentEdge = next(edges)
             countEdge += 1
             if debug == True:
@@ -113,17 +109,24 @@ def hasCycleUF(G, debug=False, showProfile = False, timeAccuracy = False):
                 print("controllo se ho già percorso l'arco ...")
 
             exit, seen = False, False
-            countSeen = 0
+            #countSeen = 0
             while not exit :
                 try:
                     currentSeen = next(edgeSeen)
-                    countSeen += 1
+                    #countSeen += 1
                     if debug:
                         print(f"currentSeen is {currentSeen}")
-                    if currentEdge.tail == currentSeen.head and currentEdge.head == currentSeen.tail and countSeen < countEdge:
+                    if currentEdge.tail == currentSeen.tail and currentEdge.head == currentSeen.head:
+                        raise StopIteration
+                    
+                    if currentEdge.tail == currentSeen.head and currentEdge.head == currentSeen.tail: #and countSeen < countEdge:
+                        
                         if debug:
                             print("già percorso")
+
                         seen = True
+                        raise StopIteration
+
                 except StopIteration:
                         if debug:
                             print(f"seen edges terminated ...")
@@ -135,35 +138,11 @@ def hasCycleUF(G, debug=False, showProfile = False, timeAccuracy = False):
                 return True
             else:
                 uf.union(uf.findRoot(tailNode), uf.findRoot(headNode))
+                
                 if debug == True:
-                   #print(f"made an Union!")
                     uf.print()
                 
         except StopIteration:
             if debug == True:
                 print("iteration terminated, exiting ...")
-            return False
-                    
-
-#def include_stripped(decorator):
-#    def wrapping_decorator(func):
-#        wrapped = decorator(func)
-#        wrapped_stripped = func
-#        return wrapped
-#    return wrapping_decorator
-
-
-#@include_stripped
-#def profiler(func):
-#    @functools.wraps(func)
-#    def wrapping_function(args):
-#        name = func.__name__
-#        global globalParam
-#        globalParam = args
-#        runctx(f'{name}.stripped(args)', globals(), locals(), 'stats.txt')
-#        #run(wrapped_stripped(globalParam), 'stats.txt')
-#        with open(f'{name}.txt', 'w') as outPutPath:
-#            stats = pstats.Stats('stats.txt', stream = outPutPath).strip_dirs().sort_stats("time")
-#            stats.print_stats()
-#    return wrapping_function
-
+            return False                    

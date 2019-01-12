@@ -25,7 +25,7 @@ def profiler(func):
 
         pathToOutput = "log.txt"
         startTime = time()
-        print(f"startTime is {startTime}")
+#        print(f"startTime is {startTime}")
         
         try:
             rValue = func(args[0], kwargs["debug"])

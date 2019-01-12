@@ -3,12 +3,13 @@ File name: HCDFS_module.py
 Author: Daniele La Prova, Lorenzo Mei, Mihai Jianu
 Python version: 3.x
 
-Modulo contenente la definizione di hasCycleDFS e delle sue funzioni ausiliarie. Tale modulo è progettato per lavorare su grafi rappresentati come matrici di adiacienza.
+Modulo contenente la definizione di hasCycleDFS e delle sue funzioni ausiliarie.
+Tale modulo è progettato per lavorare su grafi rappresentati come matrici di adiacienza.
 """
 
 from Graph.graph.Graph_AdjacencyMatrix import *
 from Graph.graph.Graph import *
-from Decorator_module import *
+from D_module import *
 
 
 class CustomGAM(GraphAdjacencyMatrix):

@@ -19,7 +19,7 @@ def gGenerator(n, rangeG, cycle = 0, debug = False):
     rangeG = range di numeri casuali, per creare i nodi
     Ciclo = Se si desidera o meno un grafo con il ciclo
     """
-    start = time()
+#    start = time()
 
     graph = GraphAdjacencyMatrix()
     
@@ -83,5 +83,5 @@ def gGenerator(n, rangeG, cycle = 0, debug = False):
     if debug:
         graph.print()
     
-    print(f"elapsed time is {time() - start} ")
+#    print(f"elapsed time is {time() - start} ")
     return graph
