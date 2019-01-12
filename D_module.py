@@ -25,20 +25,23 @@ def profiler(func):
 
         pathToOutput = "log.txt"
         startTime = time()
+        print(f"startTime is {startTime}")
         
         try:
             rValue = func(args[0], kwargs["debug"])
         except KeyError:
             rValue = func(args[0])
 
-        try:
-            if kwargs["timeAccuracy"] >= 0:
-                timeAccuracy = 5 + kwargs["timeAccuracy"]
-        except KeyError:
-                timeAccuracy = 5
+#        try:
+#            if kwargs["timeAccuracy"] >= 0:
+#                timeAccuracy = 3 + kwargs["timeAccuracy"]
+#        except KeyError:
+#                timeAccuracy = 3
         
+        #endTime = time()
+        #print(f"endTime is {endTime}")
         elapsedTime = time() - startTime
-        appendedLine = f"[{ctime(time())}] name: {func.__name__} ; nodes: {len(args[0].adj)} ; edges: {args[0].numEdges()} ; elapsed: {str(elapsedTime)[:timeAccuracy]}s ; return: {rValue}\n"
+        appendedLine = f"[{ctime(time())}] name: {func.__name__} ; nodes: {len(args[0].adj)} ; edges: {args[0].numEdges()} ; elapsed: {'%.3f' % elapsedTime}s ; return: {rValue}\n"
         with open(pathToOutput, "a") as fOutput:
             
             fOutput.write(appendedLine)

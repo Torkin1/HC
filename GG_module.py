@@ -5,6 +5,7 @@ Python version: 3.x
 Generatore di Grafi con nodi randomici, di grandezza e range a scelta, ciclico e non.
 """
 
+from time import time
 from Graph.graph.Graph_AdjacencyMatrix import *
 from random import randint
 
@@ -18,6 +19,8 @@ def gGenerator(n, rangeG, cycle = 0, debug = False):
     rangeG = range di numeri casuali, per creare i nodi
     Ciclo = Se si desidera o meno un grafo con il ciclo
     """
+    start = time()
+
     graph = GraphAdjacencyMatrix()
     
     for i in range(0, n ):
@@ -80,4 +83,5 @@ def gGenerator(n, rangeG, cycle = 0, debug = False):
     if debug:
         graph.print()
     
+    print(f"elapsed time is {time() - start} ")
     return graph
