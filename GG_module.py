@@ -21,7 +21,8 @@ def gGenerator(n, rangeG, cycle = 0, debug = False):
     @param debug: bool, if True shows execution details
     @return Graph
     
-    Genera un grafo con n nodi e almeno n - 1 archi secondo il seguente algoritmo.
+    Genera un grafo con n nodi dal valore intero casuale < rangeG e almeno n - 1 archi
+    secondo il seguente algoritmo.
 
     Per n - 1 volte, esegue un pop di un nodo tail casuale da una tailList composta
     inizialmente da n nodi. Inoltre, sceglie un altro nodo head casuale dalla tailList

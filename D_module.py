@@ -36,7 +36,11 @@ def profiler(func):
         """
         Nucleo di profiler.
         """
-        pathToOutput = "log.txt"
+        try:
+            pathToOutput = kwargs["pathLog"]
+        except KeyError:
+            pathToOutput = "log.txt"
+        
         startTime = time()
         
         try:

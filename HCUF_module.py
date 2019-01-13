@@ -55,7 +55,7 @@ def edgeGenerator(G, maxTail, maxHead):
                     yield Edge(src, dst, G.adj[src][dst])
 
 @profiler
-def hasCycleUF(G, debug=False, showProfile = False):
+def hasCycleUF(G, debug=False, showProfile = False, pathLog = "log.txt"):
     """
     @param G: Graph (as adjacency matrix)
     @return bool
