@@ -25,7 +25,6 @@ class CustomGAM(GraphAdjacencyMatrix):
         self.nextId = G.nextId
         self.adj = G.adj
 
-    #@profiler
     def dfsDetectedCycle(self, rootId, debug):
         """
         Execute a Depth-First Search (DFS) in the graph starting from the
@@ -83,7 +82,7 @@ class CustomGAM(GraphAdjacencyMatrix):
         return False
 
 @profiler
-def hasCycleDFS(G, debug = False, showProfile = False):
+def hasCycleDFS(G, debug = False, showProfile = False, pathLog = "log.txt"):
     """
     @param G: Graph
     @return: boolean
