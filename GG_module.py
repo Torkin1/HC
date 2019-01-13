@@ -34,7 +34,7 @@ def gGenerator(n, rangeG, cycle = 0, debug = False):
     # si assicura che n < MAXNODES per impedire di generare grafi troppo grandi (e dunque ingestibili dal punto di vista dell'occupazione della memoria)
     
     try:
-        assert n < MAXNODES 
+        assert n <= MAXNODES 
     
     except AssertionError:    
         print(f"n = {n} is too big, executing with n = {MAXNODES} instead (see documentation for details) ...)")
