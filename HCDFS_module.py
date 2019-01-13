@@ -83,7 +83,7 @@ class CustomGAM(GraphAdjacencyMatrix):
         return False
 
 @profiler
-def hasCycleDFS(G, debug = False, showProfile = False, timeAccuracy = False):
+def hasCycleDFS(G, debug = False, showProfile = False):
     """
     @param G: Graph
     @return: boolean
