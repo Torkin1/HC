@@ -1,6 +1,6 @@
 """
 File name: HCUF_module.py
-Author: Daniele La Prova, Lorenzo Mei, Mihai Jianu
+Author: Mihai Jianu, Daniele La Prova, Lorenzo Mei
 Python version: 3.x
 
 Modulo contenente la definizione di hasCycleUF e delle sue funzioni e classi
@@ -28,6 +28,7 @@ class CustomQFB(QuickFindBalanced):
         i nodi presenti nella struttura unionFind.
         Se l'elemento passato proviene da un nodo di un grafo si evitano ambiguità,
         dato che ogni nodo possiede un ID unico.
+        
         """
         touchedRoots = []
         for i in self.nodes:
@@ -102,8 +103,7 @@ def hasCycleUF(G, debug=False, showProfile = False, pathLog = "log.txt"):
                         
             # genera gli archi finora esplorati e controlla se currentEdge sia già presente o meno tra di essi, per evitare che venga esplorato nell'altro senso (e dunque avere l'illusione di un ciclo)
             
-            edgeSeen = edgeGenerator(G, len(G.adj), len(G.adj)
-
+            edgeSeen = edgeGenerator(G, len(G.adj), len(G.adj))
             if debug:
                 print("controllo se ho già percorso l'arco ...")
 
