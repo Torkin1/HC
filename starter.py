@@ -27,10 +27,11 @@ if __name__ == "__main__":
     parser.add_argument("-s", "--showProfile", help="Show on console the execution time", action="store_true")
     args = parser.parse_args()
 
+    inputList = eval(args.nodes)
     c = 0
     for i in range(0, 1):
-        for j in range(0, len(args.nodes)):
-            G = GG_module.gGenerator(args.nodes[j], args.range, cycle=c)
+        for j in range(0, len(inputList)):
+            G = GG_module.gGenerator(inputList[j], args.range, cycle=c)
             HCDFS_module.hasCycleDFS(G, showProfile = checkParam(args.showProfile))
             HCUF_module.hasCycleUF(G, showProfile = checkParam(args.showProfile))
         c += 1
