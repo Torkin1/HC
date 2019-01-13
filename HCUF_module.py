@@ -102,18 +102,15 @@ def hasCycleUF(G, debug=False, showProfile = False, pathLog = "log.txt"):
                         
             # genera gli archi finora esplorati e controlla se currentEdge sia già presente o meno tra di essi, per evitare che venga esplorato nell'altro senso (e dunque avere l'illusione di un ciclo)
             
-            edgeSeen = edgeGenerator(G, len(G.adj), len(G.adj))
-            currentSeen = Edge(0, 0, 1)
+            edgeSeen = edgeGenerator(G, len(G.adj), len(G.adj)
 
             if debug:
                 print("controllo se ho già percorso l'arco ...")
 
             exit, seen = False, False
-            #countSeen = 0
             while not exit :
                 try:
                     currentSeen = next(edgeSeen)
-                    #countSeen += 1
                     if debug:
                         print(f"currentSeen is {currentSeen}")
                     if currentEdge.tail == currentSeen.tail and currentEdge.head == currentSeen.head:
