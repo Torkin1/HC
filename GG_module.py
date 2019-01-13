@@ -93,9 +93,7 @@ def gGenerator(n, rangeG, cycle = 0, debug = False):
         
         for times in range(0, cycle):
             randNode = nodeList[randint(0, n - 1)]
-            adjList = graph.getAdj(randNode.id)
-            done = False
-            
+            done = False            
             x = 0
             while x < len(nodeList) and not done:
                 if not graph.isAdj(randNode.id, nodeList[x].id) and randNode.id != nodeList[x].id:
