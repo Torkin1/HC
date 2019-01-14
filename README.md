@@ -33,5 +33,7 @@ Cartella contenente immagini, schemi e grafici realizzati per stendere la relazi
 **Autori**
 
 Jianu    Mihai    0255043
+
 La Prova Daniele  0253508
+
 Mei      Lorenzo  0251766
